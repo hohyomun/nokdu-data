@@ -505,39 +505,39 @@ def show_dashboard():
 
             # 如果月度列找不到，展示原始数据并提示
             if all(v == 0 for v in target_vals) and all(v == 0 for v in actual_vals):
-                st.info("💡 未能自动识别月度目标/实绩列（建议列名含"X月目标"或"X月实绩"），以下展示原始销售统计数据：")
+                st.info("💡 未能自动识别月度目标/实绩列（建议列名含 X月目标 或 X月实绩），以下展示原始销售统计数据：")
                 # 数字列展示
                 num_cols = df_sales.select_dtypes(include=[np.number]).columns.tolist()
                 if num_cols:
-                    st.dataframe(df_sales[all_cols[:min(10, len(all_cols))]].style.hide(axis="index"),
+                    st.dataframe(df_sales[all_cols[:min(10, len(all_cols))]].style.hide(axis="index")，
                                  use_container_width=True)
             else:
                 fig_bar = go.Figure()
                 fig_bar.add_trace(go.Bar(
-                    name="目标销量",
+                    name="目标销量"，
                     x=months,
                     y=target_vals,
-                    marker_color="#93C5FD",
+                    marker_color="#93C5FD"，
                     text=[fmt_number(v) if v > 0 else "" for v in target_vals],
-                    textposition="outside",
+                    textposition="outside"，
                 ))
                 fig_bar.add_trace(go.Bar(
-                    name="实际销量",
+                    name="实际销量"，
                     x=months,
                     y=actual_vals,
-                    marker_color="#2563EB",
+                    marker_color="#2563EB"，
                     text=[fmt_number(v) if v > 0 else "" for v in actual_vals],
-                    textposition="outside",
+                    textposition="outside"，
                 ))
                 fig_bar.update_layout(
-                    barmode="group",
-                    plot_bgcolor="white",
-                    paper_bgcolor="white",
+                    barmode="group"，
+                    plot_bgcolor="white"，
+                    paper_bgcolor="white"，
                     font=dict(family="Inter, sans-serif", size=13),
                     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
                     margin=dict(l=20, r=20, t=40, b=20),
                     height=400,
-                    yaxis=dict(showgrid=True, gridcolor="#F1F5F9"),
+                    yaxis=dict(showgrid=True, gridcolor="#F1F5F9")，
                     xaxis=dict(showgrid=False),
                 )
                 st.plotly_chart(fig_bar, use_container_width=True)
