@@ -15,9 +15,9 @@ import io
 # ──────────────────────────────────────────────
 st.set_page_config(
     page_title="绿豆品牌销售业务与供应链全景看板",
-    page_icon="🌿",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    page_icon="🌿"，
+    layout="wide"，
+    initial_sidebar_state="expanded"，
 )
 
 # ──────────────────────────────────────────────
@@ -202,7 +202,7 @@ if "username" not in st.session_state:
 # ──────────────────────────────────────────────
 
 def fmt_number(val):
-    """财务格式：千位分隔符，不保留小数"""
+    """财务格式：千位分隔符,不保留小数"""
     try:
         return f"{int(round(float(val))):,}"
     except Exception:
@@ -216,15 +216,15 @@ def fmt_pct(val):
         return str(val)
 
 def truncate_name(name, max_len=18):
-    """截断产品名称，超过 max_len 显示 …"""
+    """截断产品名称,超过 max_len 显示 …"""
     s = str(name)
     return s if len(s) <= max_len else s[:max_len] + "…"
 
 def find_sheet(xls, keywords):
     """
     按关键字列表查找 Sheet（模糊匹配）。
-    keywords: 列表，任意一个命中即可。
-    返回第一个匹配的 sheet 名，否则 None。
+    keywords: 列表,任意一个命中即可。
+    返回第一个匹配的 sheet 名,否则 None。
     """
     for sheet_name in xls.sheet_names:
         for kw in keywords:
@@ -234,11 +234,11 @@ def find_sheet(xls, keywords):
 
 def smart_read_sheet(xls, sheet_name, header_keywords):
     """
-    智能扫描 Sheet，找到包含所有 header_keywords 的行作为表头，
+    智能扫描 Sheet,找到包含所有 header_keywords 的行作为表头,
     然后返回从该行开始读取的 DataFrame。
     过滤掉小计/合计/空行。
     """
-    # 不指定 header，全部读取
+    # 不指定 header,全部读取
     df_raw = pd.read_excel(xls, sheet_name=sheet_name, header=None)
 
     header_row = None
@@ -315,7 +315,7 @@ def show_login():
                     st.session_state.username = username
                     st.rerun()
                 else:
-                    st.error("用户名或密码错误，请重试。")
+                    st.error("用户名或密码错误,请重试。")
 
             st.markdown("</div>", unsafe_allow_html=True)
 
@@ -339,14 +339,14 @@ def show_dashboard():
         uploaded_file = st.file_uploader(
             "📂 上传每周数据 Excel",
             type=["xlsx", "xls"],
-            help="上传包含多个 Sheet 的复杂 Excel 表格，上传后自动刷新所有数据"
+            help="上传包含多个 Sheet 的复杂 Excel 表格,上传后自动刷新所有数据"
         )
 
         if uploaded_file:
             st.success(f"✅ 已加载：{uploaded_file.name}")
 
         st.divider()
-        st.markdown("<small>数据说明：请每周上传最新版 Excel，看板将自动解析所有 Sheet 并更新图表。</small>",
+        st.markdown("<small>数据说明：请每周上传最新版 Excel,看板将自动解析所有 Sheet 并更新图表。</small>",
                     unsafe_allow_html=True)
         st.divider()
 
@@ -361,7 +361,7 @@ def show_dashboard():
     """, unsafe_allow_html=True)
 
     if uploaded_file is None:
-        st.info("👈 请在左侧侧边栏上传 Excel 数据文件，看板将自动解析并展示所有数据。")
+        st.info("👈 请在左侧侧边栏上传 Excel 数据文件,看板将自动解析并展示所有数据。")
         st.stop()
 
     # 读取 Excel
@@ -390,7 +390,7 @@ def show_dashboard():
     with tab1:
         sheet_name = find_sheet(xls, ["销售统计"])
         if not sheet_name:
-            st.warning("未找到包含「销售统计」的 Sheet，请确认 Excel 文件格式。")
+            st.warning("未找到包含「销售统计」的 Sheet,请确认 Excel 文件格式。")
         else:
             df_sales, err = smart_read_sheet(xls, sheet_name, ["品牌", "区分"])
             if err:
@@ -454,7 +454,7 @@ def show_dashboard():
                 if actual_col:
                     total_actual = float(pd.to_numeric(row_2026.get(actual_col, 0), errors="coerce") or 0)
 
-                # 如果专门的全年列找不到，尝试从月度列求和
+                # 如果专门的全年列找不到,尝试从月度列求和
                 if total_target == 0 and month_cols_target:
                     for m, c in month_cols_target.items():
                         total_target += float(pd.to_numeric(row_2026.get(c, 0), errors="coerce") or 0)
@@ -462,7 +462,7 @@ def show_dashboard():
                     for m, c in month_cols_actual.items():
                         total_actual += float(pd.to_numeric(row_2026.get(c, 0), errors="coerce") or 0)
 
-            # 如果按行找不到，尝试按全列汇总
+            # 如果按行找不到,尝试按全列汇总
             if total_target == 0 and target_col:
                 total_target = pd.to_numeric(df_sales[target_col], errors="coerce").sum()
             if total_actual == 0 and actual_col:
@@ -503,9 +503,9 @@ def show_dashboard():
                 target_vals.append(t_val)
                 actual_vals.append(a_val)
 
-            # 如果月度列找不到，展示原始数据并提示
+            # 如果月度列找不到,展示原始数据并提示
             if all(v == 0 for v in target_vals) and all(v == 0 for v in actual_vals):
-                st.info("💡 未能自动识别月度目标/实绩列（建议列名含 X月目标 或 X月实绩），以下展示原始销售统计数据：")
+                st.info("💡 未能自动识别月度目标/实绩列（建议列名含 X月目标 或 X月实绩）,以下展示原始销售统计数据：")
                 # 数字列展示
                 num_cols = df_sales.select_dtypes(include=[np.number]).columns.tolist()
                 if num_cols:
@@ -514,30 +514,30 @@ def show_dashboard():
             else:
                 fig_bar = go.Figure()
                 fig_bar.add_trace(go.Bar(
-                    name="目标销量"，
+                    name="目标销量",
                     x=months,
                     y=target_vals,
-                    marker_color="#93C5FD"，
+                    marker_color="#93C5FD",
                     text=[fmt_number(v) if v > 0 else "" for v in target_vals],
-                    textposition="outside"，
+                    textposition="outside",
                 ))
                 fig_bar.add_trace(go.Bar(
-                    name="实际销量"，
+                    name="实际销量",
                     x=months,
                     y=actual_vals,
-                    marker_color="#2563EB"，
+                    marker_color="#2563EB",
                     text=[fmt_number(v) if v > 0 else "" for v in actual_vals],
-                    textposition="outside"，
+                    textposition="outside",
                 ))
                 fig_bar.update_layout(
-                    barmode="group"，
-                    plot_bgcolor="white"，
-                    paper_bgcolor="white"，
+                    barmode="group",
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     font=dict(family="Inter, sans-serif", size=13),
                     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
                     margin=dict(l=20, r=20, t=40, b=20),
                     height=400,
-                    yaxis=dict(showgrid=True, gridcolor="#F1F5F9")，
+                    yaxis=dict(showgrid=True, gridcolor="#F1F5F9"),
                     xaxis=dict(showgrid=False),
                 )
                 st.plotly_chart(fig_bar, use_container_width=True)
@@ -574,11 +574,11 @@ def show_dashboard():
                 df_history = pd.DataFrame(history_rows)
                 st.dataframe(df_history.style.hide(axis="index"), use_container_width=True)
             else:
-                st.info("未识别到 2023/2024/2025 历史行，请确认 Excel 中含年份标记。展示原始数据供参考：")
+                st.info("未识别到 2023/2024/2025 历史行,请确认 Excel 中含年份标记。展示原始数据供参考：")
                 st.dataframe(df_sales.head(20).style.hide(axis="index"), use_container_width=True)
 
         else:
-            st.warning("销售统计 Sheet 数据为空或解析失败，请检查文件格式。")
+            st.warning("销售统计 Sheet 数据为空或解析失败,请检查文件格式。")
 
     # ═══════════════════════════════════════════
     # Tab 2 — 在库成品全景
@@ -629,7 +629,7 @@ def show_dashboard():
                 df_inv_sorted_amt[amount_col] = to_numeric_safe(df_inv_sorted_amt[amount_col])
                 df_inv_sorted_amt = df_inv_sorted_amt.sort_values(amount_col, ascending=False).head(10)
 
-                # 截断名称（Y轴），保留全名（hover）
+                # 截断名称（Y轴）,保留全名（hover）
                 df_inv_sorted_amt["short_name"] = df_inv_sorted_amt[product_col].apply(truncate_name)
                 df_inv_sorted_amt["full_name"] = df_inv_sorted_amt[product_col]
 
@@ -658,7 +658,7 @@ def show_dashboard():
                 )
                 st.plotly_chart(fig_bar_h, use_container_width=True)
             else:
-                st.info("未识别到金额相关列，请确认列名含「金额」、「价值」等关键字。")
+                st.info("未识别到金额相关列,请确认列名含「金额」、「价值」等关键字。")
 
             st.markdown("---")
 
@@ -743,7 +743,7 @@ def show_dashboard():
 
             st.dataframe(df_order.style.hide(axis="index"), use_container_width=True)
         else:
-            st.warning("未找到「未执行订单」或「预付款管理」Sheet，或数据解析失败。")
+            st.warning("未找到「未执行订单」或「预付款管理」Sheet,或数据解析失败。")
 
         st.markdown("---")
 
@@ -796,7 +796,7 @@ def show_dashboard():
 
             st.dataframe(df_prod.style.hide(axis="index"), use_container_width=True)
         else:
-            st.warning("未找到「生产计划」Sheet，或数据解析失败。")
+            st.warning("未找到「生产计划」Sheet,或数据解析失败。")
 
     # ═══════════════════════════════════════════
     # Tab 4 — 核心业务推进跟踪
@@ -824,7 +824,7 @@ def show_dashboard():
                 st.metric("备案未产产品数量", f"{len(df_ba)} 项")
                 st.dataframe(df_ba.style.hide(axis="index"), use_container_width=True, height=500)
             else:
-                st.warning("未找到「备案未产」Sheet，或数据解析失败。")
+                st.warning("未找到「备案未产」Sheet,或数据解析失败。")
 
         # ——— 右列：进行中业务 ———
         with col_right:
@@ -870,7 +870,7 @@ def show_dashboard():
 
                 st.dataframe(df_biz.style.hide(axis="index"), use_container_width=True, height=400)
             else:
-                st.warning("未找到「进行中业务」Sheet，或数据解析失败。")
+                st.warning("未找到「进行中业务」Sheet,或数据解析失败。")
 
 
 # ──────────────────────────────────────────────
