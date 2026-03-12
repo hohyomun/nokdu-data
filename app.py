@@ -509,7 +509,7 @@ def show_dashboard():
                 # 数字列展示
                 num_cols = df_sales.select_dtypes(include=[np.number]).columns.tolist()
                 if num_cols:
-                    st.dataframe(df_sales[all_cols[:min(10, len(all_cols))]].style.hide(axis="index")，
+                    st.dataframe(df_sales[all_cols[:min(10, len(all_cols))]].style.hide(axis="index"),
                                  use_container_width=True)
             else:
                 fig_bar = go.Figure()
