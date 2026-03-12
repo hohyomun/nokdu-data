@@ -15,7 +15,7 @@ import io
 # ──────────────────────────────────────────────
 st.set_page_config(
     page_title="绿豆品牌销售业务与供应链全景看板",
-    page_icon="🌿"，
+    page_icon="🌿",
     layout="wide"，
     initial_sidebar_state="expanded"，
 )
